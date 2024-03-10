@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.application.practice2Ver2.dao.MemberDAO">
+<insert id="createMember">
+INSERT INTO 
+		MEMBER(
+			MEMBER_ID,
+			PASSWD,
+			PROFILE_ORIGINAL_NAME,
+			PROFILE_UUID,
+			MEMBER_NM,
+			SEX,
+			BIRTH_AT,
+			HP,
+			SMSSTS_YN,
+			EMAIL,
+			EMAILSTS_YN,
+			ZIPCODE,
+			ROAD_ADDRESS,
+			JIBUN_ADDRESS,
+			NAMUJI_ADDRESS,
+			ETC
+)
+VALUES(
+			#{memberId},
+			#{passwd},
+			#{profileOriginalName},
+			#{profileUUID},
+			#{memberNm},
+			#{sex},
+			#{birthAt},
+			#{hp},
+			#{smsstsYn},
+			#{email},
+			#{emailstsYn},
+			#{zipcode},
+			#{roadAddress},
+			#{jibunAddress},
+			#{namujiAddress},
+			#{etc}
+		 )
+</insert>
+
+<select id="checkValidId" parameterType="String" resultType="String">
+SELECT
+		MEMBER_ID
+FROM 
+		MEMBER
+WHERE
+		MEMBER_ID=#{memberId}
+
+</select>
+
+<select id="login" parameterType="String" resultType="MemberDTO">
+SELECT 
+		PASSWD,
+       ACTIVE_YN
+FROM 
+		MEMBER
+WHERE 
+		MEMBER_ID = #{memberId}
+</select>
+
+<select id="getMamberDetail" parameterType="String" resultType="MemberDTO">
+SELECT 
+		*
+FROM
+		MEMBER
+WHERE
+		MEMBER_ID=#{memberId}
+
+</select>
+
+<update id="updateMember" parameterType="MemberDTO" >
+UPDATE MEMBER
+<set>
+	<if test="profileOriginalName !=null and profileOriginalName!=''">
+	PROFILE_ORIGINAL_NAME = #{profileOriginalName},
+	</if>
+	<if test="profileUUID !=null and profileUUID''">
+	profileUUID = #{profileUUID},
+	</if>
+	<if test="memberNm !=null and memberNm''">
+	MEMBER_NM = #{memberNm},
+	</if>
+	<if test="sex !=null and sex''">
+	SEX = #{sex},
+	</if>
+	<if test="birthAt !=null and birthAt''">
+	BIRTH_AT = #{birthAt},
+	</if>
+	<if test="hp !=null and hp''">
+	HP = #{hp},
+	</if>
+	<if test="smsstsYn !=null and smsstsYn''">
+	SMSSTS_YN = #{smsstsYn},
+	</if>
+	<if test="email !=null and email''">
+	EMAIL = #{email},
+	</if>
+	<if test="emailstsYn !=null and emailstsYn''">
+	EMAILSTS_YN = #{emailstsYn},
+	</if>
+	<if test="zipcode !=null and zipcode''">
+	ZIPCODE = #{zipcode},
+	</if>
+	<if test="roadAddress !=null and roadAddress''">
+	ROAD_ADDRESS = #{roadAddress},
+	</if>
+	<if test="jibunAddress !=null and jibunAddress''">
+	JIBUN_ADDRESS = #{jibunAddress},
+	</if>
+	<if test="namujiAddress !=null and namujiAddress''">
+	NAMUJI_ADDRESS = #{namujiAddress},
+	</if>
+	<if test="etc !=null and etc''">
+	ETC = #{etc},
+	</if>
+	
+</set>
+WHERE MEMBER_ID = #{memberId}
+</update>
+
+<update id="updateInactiveMember" parameterType="String">
+UPDATE 
+		MEMBER
+SET 
+	 ACTIVE_YN = 'n',
+	INACTIVE_AT = NOW()
+WHERE
+		MEMBER_ID=#{memberId}
+</update>
+
+<select id="getTodayNewMemberCnt" parameterType="String">
+SELECT 
+		COUNT(MEMBER_ID)
+FROM 
+		MEMBER
+WHERE 
+		JOIN_AT=#{today}
+</select>
+
+<select id="getdeleteMemberList" resultType="MemberDTO">
+<![CDATA[
+SELECT	
+		MEMBER_ID , 
+		PROFILE_UUID
+FROM	
+		MEMBER
+WHERE	
+			INACTIVE_AT < (SELECT DATE_SUB(CURRENT_DATE, INTERVAL 90 DAY))
+]]>
+		
+</select>
+<delete id="deleteMember" parameterType="String">
+DELETE FROM 
+			MEMBER
+WHERE 
+			MEMBER_ID=#{memberId}
+</delete>
+
+
+</mapper>
