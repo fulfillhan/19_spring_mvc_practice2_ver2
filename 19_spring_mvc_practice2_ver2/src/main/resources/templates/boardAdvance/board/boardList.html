@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>board list</title>
+<style>
+	ul {
+	    list-style:none;
+	    margin:0;
+	    padding:0;
+	}
+	
+	li {
+	    margin: 0 0 0 0;
+	    padding: 0 0 0 0;
+	    border : 0;
+	    float: left;
+	}
+</style>
+<script th:src="@{/jquery/jquery-3.6.1.min.js}"></script>
+<script>
+
+	$().ready(function(){
+		
+		$("#onePageViewCnt").val("[[${onePageViewCnt}]]");
+		$("#searchKeyword").val("[[${searchKeyword}]]");
+		
+	});
+
+	
+	function getBoardList(currentPageNumber) {
+		
+		let url = "/boardAdvance/boardList"
+		    url += "?searchKeyword=" +  $("#searchKeyword").val();
+		    url += "&searchWord=" + $("#searchWord").val() 
+		    url += "&onePageViewCnt=" + $("#onePageViewCnt").val();
+		    if (currentPageNumber != null) {
+				url += "&currentPageNumber=" + currentPageNumber;
+		    }
+			
+		location.href = url;
+	
+	}
+	
+</script>
+</head>
+<body>
+
+	<p align="right">
+		<input type="button" value="테스트 데이터 생성" th:onclick="|location.href='@{/boardAdvance/createBoardDummy}'|">
+	</p>
+
+	<div align="center" style="padding-top: 100px" >
+		<h2> 커뮤니티 게시글 리스트 </h2>
+		<table border="1" >
+			<colgroup>
+				<col width="10%">
+				<col width="40%">
+				<col width="20%">
+				<col width="20%">
+				<col width="10%">
+			</colgroup>
+			<tr>
+				<td> 
+					조회 : <span style="color:red" th:text="${allBoardCnt}"></span>개
+				</td>
+				<td colspan="4" align="right" >
+					<select id="onePageViewCnt" onchange="getBoardList()" >
+						<option>5</option>
+						<option>7</option>
+						<option>10</option>
+					</select>
+				</td>
+			</tr>
+			<tr align="center">
+					<td>번호</td>
+					<td>제목</td>
+					<td>작성자</td>
+					<td>작성일</td>
+					<td>조회수</td>
+			</tr>
+			<tbody id="boardList">
+				<tr align="center" th:each="mainBoardDTO : ${boardList}">
+					<td th:text="${startBoardIdx + mainBoardDTOStat.count}"></td>
+					<td><a th:href="@{/boardAdvance/boardDetail(boardId=${mainBoardDTO.boardId })}" th:text="${mainBoardDTO.subject}"></a></td>
+					<td th:text="${mainBoardDTO.writer}"></td>
+					<td th:text="${#dates.format(mainBoardDTO.enrollAt , 'yyyy-MM-dd')}"></td>
+					<td th:text="${mainBoardDTO.readCnt}"></td>
+				</tr>
+			</tbody>
+			<tr align="right">
+				<td colspan="5">
+					<input type="button" value="글쓰기" th:onclick="|location.href='@{/boardAdvance/createBoard}'|">
+				</td>
+			</tr>
+			<tr>
+				<td colspan="5" align="center">			
+					<select id="searchKeyword">
+						<option value="total">전체검색</option>
+						<option value="writer">작성자</option>
+						<option value="subject">제목</option>
+					</select>
+					<input type="text" id="searchWord" name="searchWord" th:value="${searchWord }">
+					<input type="button" value="검색" onclick="getBoardList()">
+				</td>
+			</tr>
+		</table>
+		<div style="display: table; margin-left: auto; margin-right: auto">
+			<ul>
+				<li th:if="${startPage > 10}">
+					<a th:href="|javascript:getBoardList(${startPage - 10})|"> 이전&nbsp;</a>
+				</li> 			  
+				<li th:each="i : ${#numbers.sequence(startPage , endPage)}">
+					<a th:href="|javascript:getBoardList(${i })|" th:text="${i}"></a>&nbsp;
+				</li>
+				<li th:if="${endPage != allPageCnt && endPage >= 10}">
+					<a th:href="|javascript:getBoardList(${startPage + 10})|"> 다음 </a>
+				</li> 
+			</ul>
+		</div>
+	</div>
+</body>
+</html>

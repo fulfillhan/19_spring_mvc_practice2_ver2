@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>board detail</title>
+</head>
+</head>
+<body>
+
+	<div align="center" style="padding-top: 100px">
+		<h2>게시글 상세</h2>
+		<table style="width: 700px; text-align: center" border="1">
+			<colgroup>
+				<col width="20%">
+				<col width="80%">
+			</colgroup>
+			<tr>
+				<td>제목</td>
+				<td th:text="${mainBoardDTO.subject }"></td>
+			</tr>
+			<tr>
+				<td>조회수</td>
+				<td th:text="${mainBoardDTO.readCnt }"></td>
+			</tr>
+			<tr>
+				<td>작성자</td>
+				<td th:text="${mainBoardDTO.writer }"></td>
+			</tr>
+			<tr>
+				<td>작성일</td>
+				<td th:text="${#dates.format(mainBoardDTO.enrollAt , 'yyyy-MM-dd') }"></td>
+			</tr>
+			<tr>
+				<td>글 내용</td>
+				<td th:utext="${mainBoardDTO.content }"></td>
+			</tr>
+			<tr align="right">
+				<td colspan="2">
+					<input type="button" value="수정"  th:onclick="|location.href='@{/boardAdvance/boardAuthentication(boardId=${mainBoardDTO.boardId },menu=update)}'|">
+					<input type="button" value="삭제"  th:onclick="|location.href='@{/boardAdvance/boardAuthentication(boardId=${mainBoardDTO.boardId },menu=delete)}'|">
+					<input type="button" value="목록보기"  th:onclick="|location.href='@{/boardAdvance/boardList}'|">
+				</td>
+			</tr>
+		</table>
+		
+		<br>
+		<hr>
+		<br>
+		
+		<h4 th:text="|댓글 리스트 (${allReplyCnt })|"></h4>
+		<table style="width: 700px;" border="1">
+			<tr th:each="replyDTO : ${replyList}">
+				<td>
+					작성자 : <span th:text="${replyDTO.writer}"></span> / 작성일 : <span th:text="${#dates.format(replyDTO.enrollAt , 'yyyy-MM-dd') }"></span> <br>
+					<span th:text="${replyDTO.content }"></span>
+					<input type="button" value="수정" th:onclick="|location.href='@{/boardAdvance/updateReply(replyId=${replyDTO.replyId})}'|">
+					<input type="button" value="삭제" th:onclick="|location.href='@{/boardAdvance/deleteReply(replyId=${replyDTO.replyId})}'|">
+				</td>
+			</tr>			
+			<tr>
+				<td align="right">
+					<input type="button" value="댓글작성" th:onclick="|location.href='@{/boardAdvance/createReply(boardId=${mainBoardDTO.boardId })}'|">
+				</td>
+			</tr>
+		</table>
+		
+	</div>
+</body>
+</html>

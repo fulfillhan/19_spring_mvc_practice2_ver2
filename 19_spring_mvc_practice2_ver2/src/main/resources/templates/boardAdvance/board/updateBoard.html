@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>update board</title>
+<script th:src="@{/ckeditor/ckeditor.js}"></script>  
+</head>
+<body>
+
+	<div align="center" style="padding-top: 100px">
+		<h1>게시글 수정하기</h1>
+		<br>
+		<form th:action="@{/boardAdvance/updateBoard}" method="post" th:object="${mainBoardDTO}">
+			<table style="width: 700px;" border="1">
+				<colgroup>
+					<col width="20%">
+					<col width="80%">
+				</colgroup>
+				<tr>
+					<td>작성일</td>
+					<td th:text="${#dates.format(mainBoardDTO.enrollAt , 'yyyy-MM-dd')}"></td>
+				</tr>
+				<tr>
+					<td>작성자</td>
+					<td><input type="text" th:field="*{writer}"/></td>
+				</tr>
+				<tr>
+					<td>제목</td>
+					<td><input type="text"  th:field="*{subject}" size="70"/></td>
+				</tr>
+				<tr>
+					<td>글내용</td>
+					<td>
+						<textarea rows="10" cols="60" th:field="*{content}"></textarea>
+						<script>CKEDITOR.replace("content")</script>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" align="right">
+						<input type="hidden" th:field="*{boardId}" /> 
+						<input type="submit" value="수정하기" />
+						<input type="button" th:onclick="|location.href='@{/boardAdvance/boardList}'|" value="전체글보기" />
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+
+</body>
+</html>
