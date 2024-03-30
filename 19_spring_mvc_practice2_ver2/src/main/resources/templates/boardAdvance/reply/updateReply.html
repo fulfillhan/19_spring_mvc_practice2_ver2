@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>update reply</title>
+</head>
+<body>
+
+	<div align="center" style="padding-top: 100px">
+		<h1>댓글 수정</h1>
+		<br>
+		<form th:action="@{/boardAdvance/updateReply}" method="post">
+			<table style="width: 700px;" border="1">
+				<colgroup>
+					<col width="20%">
+					<col width="80%">
+				</colgroup>
+				<tr>
+					<td>작성일</td>
+					<td th:text="${#dates.format(replyDTO.enrollAt , 'yyyy-MM-dd')}"></td>
+				</tr>
+				<tr>
+					<td>작성자</td>
+					<td><input type="text" name="writer" th:value="${replyDTO.writer }"/></td>
+				</tr>
+				<tr>
+					<td>패스워드</td>
+					<td><input type="password" name="passwd" size="70"/></td>
+				</tr>
+				<tr>
+					<td>댓글</td>
+					<td>
+						<textarea rows="10" cols="60" name="content" th:text="${replyDTO.content }"></textarea>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2" align="right">
+						<input type="hidden" name="boardId" th:value="${replyDTO.boardId }" /> 
+						<input type="hidden" name="replyId" th:value="${replyDTO.replyId }" /> 
+						<input type="submit" value="댓글수정" />
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+
+</body>
+</html>

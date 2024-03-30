@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.application.practice2Ver2.boardAdvance.dto.MainBoardDTO;
+import com.application.practice2Ver2.boardAdvance.dto.ReplyDTO;
 
 public interface BoardAdvanceService {
 
@@ -19,5 +20,21 @@ public interface BoardAdvanceService {
 	public MainBoardDTO getBoardDetail(long boardId, boolean checkReadCnt);
 
 	public boolean isAuthorized(MainBoardDTO mainBoardDTO);
+
+	public void updateBoard(MainBoardDTO mainBoardDTO);
+
+	public void deleteBoard(long boardId);
+
+	public void createReply(ReplyDTO replyDTO);
+
+	public int allReplyCnt(long boardId);
+
+	public List<ReplyDTO> getReplyList(long boardId);
+
+	public ReplyDTO getReplyDetail(long replyId);
+
+	public boolean deleteReply(ReplyDTO replyDTO);
+
+	public boolean updateReply(ReplyDTO replyDTO);
 
 }

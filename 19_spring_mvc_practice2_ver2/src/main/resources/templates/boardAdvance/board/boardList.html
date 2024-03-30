@@ -39,7 +39,6 @@
 		    }
 			
 		location.href = url;
-	
 	}
 	
 </script>
@@ -109,8 +108,8 @@
 			<ul>
 				<li th:if="${startPage > 10}">
 					<a th:href="|javascript:getBoardList(${startPage - 10})|"> 이전&nbsp;</a>
-				</li> 			  
-				<li th:each="i : ${#numbers.sequence(startPage , endPage)}">
+				</li> 
+				<li th:each="i : ${#numbers.sequence(startPage, endPage)}">
 					<a th:href="|javascript:getBoardList(${i })|" th:text="${i}"></a>&nbsp;
 				</li>
 				<li th:if="${endPage != allPageCnt && endPage >= 10}">

@@ -129,4 +129,92 @@
 	WHERE 
 			BOARD_ID = #{boardId}
 </select>
+
+<update id="updateBoard" parameterType="mainBoardDTO">
+ 	UPDATE
+ 			 MAIN_BOARD
+ 	SET  
+ 			WRITER = #{writer},
+ 			SUBJECT = #{subject},
+ 			CONTENT = #{content},
+ 			ENROLL_AT = NOW()
+	WHERE
+			BOARD_ID= #{boardId}
+</update>
+
+<delete id="deleteBoard" parameterType="long">
+	DELETE FROM 
+			MAIN_BOARD
+	WHERE 
+			BOARD_ID = #{boardId}
+</delete>
+
+<insert id="createReply" parameterType="ReplyDTO">
+	INSERT INTO REPLY(
+	WRITER,
+	PASSWD,
+	CONTENT,
+	BOARD_ID
+	)
+	VALUES(
+	#{writer},
+	#{passwd},
+	#{content},
+	#{boardId}
+	)
+</insert>
+<select id="getReplyCnt" parameterType="long" resultType="int">
+	SELECT 
+			COUNT(*)
+	FROM 
+			REPLY
+	WHERE 
+			BOARD_ID = #{boardId}
+</select>
+
+<select id="getReplyList" parameterType="long" resultType="ReplyDTO">
+	SELECT 
+			*
+	FROM 
+			REPLY
+	WHERE
+			BOARD_ID = #{boardId}
+</select>
+
+<select id="getReplyDetail" parameterType="long" resultType="ReplyDTO">
+	SELECT 
+			*
+	FROM 
+			REPLY
+	WHERE 
+			REPLY_ID = #{replyId}
+</select>
+<select id="validateReplyUserCheck" parameterType="ReplyDTO" resultType="String">
+	SELECT 
+			PASSWD
+	FROM 
+			REPLY
+	WHERE 
+			REPLY_ID = #{replyId}
+</select>
+<update id="updateReply" parameterType="ReplyDTO">
+	UPDATE 
+			REPLY
+	SET 
+			WRITER=#{writer},
+			CONTENT=#{content},
+			ENROLL_AT=NOW()
+	WHERE 
+			REPLY_ID = #{replyId}
+	
+</update>
+
+<delete id="deleteReply" parameterType="ReplyDTO">
+	DELETE FROM 
+			REPLY
+	WHERE 
+			REPLY_ID = #{replyId}
+</delete>
+
+
 </mapper>

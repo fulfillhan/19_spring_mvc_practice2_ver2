@@ -7,6 +7,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.application.practice2Ver2.boardAdvance.dto.MainBoardDTO;
+import com.application.practice2Ver2.boardAdvance.dto.ReplyDTO;
 
 @Mapper
 public interface BoardAdanceDAO {
@@ -23,6 +24,26 @@ public interface BoardAdanceDAO {
 	public void udpateReadCnt(long boardId);
 
 	public String getEncodedPasswd(long boardId);
+
+	public void updateBoard(MainBoardDTO mainBoardDTO);
+
+	public void deleteBoard(long boardId);
+
+	public void createReply(ReplyDTO replyDTO);
+	
+	public int getReplyCnt(long boardId);
+
+	public List<ReplyDTO> getReplyList(long boardId);
+
+	public ReplyDTO getReplyDetail(long replyId);
+
+	public void deleteReply(ReplyDTO replyDTO);
+
+	public String validateReplyUserCheck(long replyId);
+
+	public void updateReply(ReplyDTO replyDTO);
+
+
 	
 
 }

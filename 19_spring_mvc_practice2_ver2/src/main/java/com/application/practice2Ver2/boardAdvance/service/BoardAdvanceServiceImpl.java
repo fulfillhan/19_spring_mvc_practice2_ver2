@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.application.practice2Ver2.boardAdvance.dao.BoardAdanceDAO;
 import com.application.practice2Ver2.boardAdvance.dto.MainBoardDTO;
+import com.application.practice2Ver2.boardAdvance.dto.ReplyDTO;
 
 @Service
 public class BoardAdvanceServiceImpl implements BoardAdvanceService {
@@ -66,6 +67,80 @@ public class BoardAdvanceServiceImpl implements BoardAdvanceService {
 		return isCheckAuthorize;
 	}
 
+
+	@Override
+	public void updateBoard(MainBoardDTO mainBoardDTO) {
+		
+		boardAdanceDAO.updateBoard(mainBoardDTO);
+	}
+
+
+	@Override
+	public void deleteBoard(long boardId) {
+		boardAdanceDAO.deleteBoard(boardId);
+	}
+
+
+	@Override
+	public int allReplyCnt(long boardId) {
+		
+		return boardAdanceDAO.getReplyCnt(boardId);
+	}
+	
+	
+	@Override
+	public List<ReplyDTO> getReplyList(long boardId) {
+		
+		return boardAdanceDAO.getReplyList(boardId);
+	}
+	
+	@Override
+	public void createReply(ReplyDTO replyDTO) {
+		//passwordEncoder.encode(replyDTO.getPasswd());
+		replyDTO.setPasswd(passwordEncoder.encode(replyDTO.getPasswd()));
+		boardAdanceDAO.createReply(replyDTO);
+		
+	}
+
+
+	@Override
+	public ReplyDTO getReplyDetail(long replyId) {
+		
+		return boardAdanceDAO.getReplyDetail(replyId);
+	}
+
+
+	@Override
+	public boolean deleteReply(ReplyDTO replyDTO) {
+		String encodedPasswd = boardAdanceDAO.validateReplyUserCheck(replyDTO.getReplyId());
+		if(passwordEncoder.matches(replyDTO.getPasswd(),encodedPasswd)) {
+			boardAdanceDAO.deleteReply(replyDTO);
+			return true;
+		}
+		return false;
+	}
+
+
+	@Override
+	public boolean updateReply(ReplyDTO replyDTO) {
+		//패스워드 입력 확인하기
+		boolean validateReplyUserCheck = false;
+		String encodedPasswd = boardAdanceDAO.validateReplyUserCheck(replyDTO.getReplyId());
+		//passwordEncoder.matches(replyDTO.getPasswd(),encodedPasswd);
+		if(passwordEncoder.matches(replyDTO.getPasswd(),encodedPasswd)) {
+			boardAdanceDAO.updateReply(replyDTO);
+			validateReplyUserCheck = true;
+		}
+		return validateReplyUserCheck;
+	}
+
+
+
+
+
+
+	
+	
 
 	
 	
